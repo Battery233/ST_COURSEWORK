@@ -417,34 +417,34 @@ public class Task1Functional {
 		assertEquals("Hi, my name is Peter. david is my forename.", simpleEngine.evaluate(
 				"Hi, my name is David. david is my forename.", "David", "Peter", SimpleTemplateEngine.CASE_SENSITIVE));
 	}
-	
+
 	@Test
 	public void TestSimpleTemplateEngine14() {
 		assertEquals("Hi, my name is Peter. Peter is my forename.", simpleEngine.evaluate(
 				"Hi, my name is David. david is my forename.", "David", "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
 	}
-	
+
 	@Test
 	public void TestSimpleTemplateEngine15() {
-		assertEquals("localVARIABLE int localId = global.", simpleEngine.evaluate(
-				"localVARIABLE int localId = local.", "local", "global", SimpleTemplateEngine.WHOLE_WORLD_SEARCH ));
+		assertEquals("localVARIABLE int localId = global.", simpleEngine.evaluate("localVARIABLE int localId = local.",
+				"local", "global", SimpleTemplateEngine.WHOLE_WORLD_SEARCH));
 	}
-	
+
 	@Test
 	public void TestSimpleTemplateEngine16() {
-		assertEquals("globalVARIABLE int globalId = global.", simpleEngine.evaluate(
-				"localVARIABLE int localId = local.", "local", "global", SimpleTemplateEngine.DEFAULT_MATCH ));
+		assertEquals("globalVARIABLE int globalId = global.", simpleEngine
+				.evaluate("localVARIABLE int localId = local.", "local", "global", SimpleTemplateEngine.DEFAULT_MATCH));
 	}
-	
+
 	@Test
 	public void TestSimpleTemplateEngine17() {
-		assertEquals("localVARIABLE int localId = global,Local.", simpleEngine.evaluate(
-				"localVARIABLE int localId = local,Local.", "local", "global", SimpleTemplateEngine.WHOLE_WORLD_SEARCH|SimpleTemplateEngine.CASE_SENSITIVE ));
+		assertEquals("localVARIABLE int localId = global,Local.",
+				simpleEngine.evaluate("localVARIABLE int localId = local,Local.", "local", "global",
+						SimpleTemplateEngine.WHOLE_WORLD_SEARCH | SimpleTemplateEngine.CASE_SENSITIVE));
 	}
-	
+
 	@Test
 	public void TestSimpleTemplateEngine18() {
-		assertEquals("defabcabc", simpleEngine.evaluate(
-				"defabc", "abc", "abcabc", SimpleTemplateEngine.DEFAULT_MATCH));
+		assertEquals("defabcabc", simpleEngine.evaluate("defabc", "abc", "abcabc", SimpleTemplateEngine.DEFAULT_MATCH));
 	}
 }
