@@ -314,15 +314,137 @@ public class Task1Functional {
 		map.store("s", "S");
 		map.store("lm", "LM");
 		map.store("fgijkLMnopqr", "123");
-		assertEquals("abc}${de}123Suvw${xyz", engine.evaluate("abc}${de}${fgijk${lm}nopqr}${s}uvw${xyz", map, TemplateEngine.KEEP_UNMATCHED));
+		assertEquals("abc}${de}123Suvw${xyz",
+				engine.evaluate("abc}${de}${fgijk${lm}nopqr}${s}uvw${xyz", map, TemplateEngine.KEEP_UNMATCHED));
 	}
-	
+
 	@Test
 	public void TestExhaustedResults2() {
 		map.store("s", "S");
 		map.store("lm", "LM");
 		map.store("fgijkLMnopqr", "123");
-		assertEquals("abc}123Suvw${xyz", engine.evaluate("abc}${de}${fgijk${lm}nopqr}${s}uvw${xyz", map, TemplateEngine.DELETE_UNMATCHED));
+		assertEquals("abc}123Suvw${xyz",
+				engine.evaluate("abc}${de}${fgijk${lm}nopqr}${s}uvw${xyz", map, TemplateEngine.DELETE_UNMATCHED));
 	}
 
+	// *
+	// *
+	// SimpleTemplateEngine Class Specification
+	// *
+	// *
+	// The template string can be NULL or empty
+	@Test
+	public void TestSimpleTemplateEngine01() {
+		assertEquals(null, simpleEngine.evaluate(null, "David", "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	@Test
+	public void TestSimpleTemplateEngine02() {
+		assertEquals("", simpleEngine.evaluate("", "David", "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	// The Formatted pattern can be NULL or empty.
+	@Test
+	public void TestSimpleTemplateEngine03() {
+		assertEquals("Hi, my name is David. David is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. David is my forename.", "", "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	@Test
+	public void TestSimpleTemplateEngine04() {
+		assertEquals("Hi, my name is David. David is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. David is my forename.", null, "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	// The value string can be NULL or empty
+	@Test
+	public void TestSimpleTemplateEngine05() {
+		assertEquals("Hi, my name is David. David is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. David is my forename.", "David", "", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	@Test
+	public void TestSimpleTemplateEngine06() {
+		assertEquals("Hi, my name is David. David is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. David is my forename.", "David", null, SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	// In the pattern string, '#' is considered as a special value to specify the
+	// pattern to be replaced
+	@Test
+	public void TestSimpleTemplateEngine07() {
+		assertEquals("Hi, my name is Peter. Peter is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. David is my forename.", "David", "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	@Test
+	public void TestSimpleTemplateEngine08() {
+		assertEquals("Hi, my name is David. David is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. David is my forename.", "David#3", "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	@Test
+	public void TestSimpleTemplateEngine09() {
+		assertEquals("Hi, my name is David. David is my forename, Peter.",
+				simpleEngine.evaluate("Hi, my name is David. David is my forename, David.", "David#3", "Peter",
+						SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	@Test
+	public void TestSimpleTemplateEngine10() {
+		assertEquals("Hi, my name is Peter. David is my forename.",
+				simpleEngine.evaluate("Hi, my name is David#. David is my forename.", "David##", "Peter",
+						SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	@Test
+	public void TestSimpleTemplateEngine11() {
+		assertEquals("Hi, my name is David#. Peter is my forename.",
+				simpleEngine.evaluate("Hi, my name is David#. David# is my forename.", "David###2", "Peter",
+						SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	@Test
+	public void TestSimpleTemplateEngine12() {
+		assertEquals("Hi, my name is David. Petervid is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. David is my forename.", "Da#2vid", "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+
+	// The default matching mode (SimpleTemplateEngine.DEFAULT_MATCH) is not case
+	// sensitive and the pattern can be either a word or part of the word.
+	@Test
+	public void TestSimpleTemplateEngine13() {
+		assertEquals("Hi, my name is Peter. david is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. david is my forename.", "David", "Peter", SimpleTemplateEngine.CASE_SENSITIVE));
+	}
+	
+	@Test
+	public void TestSimpleTemplateEngine14() {
+		assertEquals("Hi, my name is Peter. Peter is my forename.", simpleEngine.evaluate(
+				"Hi, my name is David. david is my forename.", "David", "Peter", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
+	
+	@Test
+	public void TestSimpleTemplateEngine15() {
+		assertEquals("localVARIABLE int localId = global.", simpleEngine.evaluate(
+				"localVARIABLE int localId = local.", "local", "global", SimpleTemplateEngine.WHOLE_WORLD_SEARCH ));
+	}
+	
+	@Test
+	public void TestSimpleTemplateEngine16() {
+		assertEquals("globalVARIABLE int globalId = global.", simpleEngine.evaluate(
+				"localVARIABLE int localId = local.", "local", "global", SimpleTemplateEngine.DEFAULT_MATCH ));
+	}
+	
+	@Test
+	public void TestSimpleTemplateEngine17() {
+		assertEquals("localVARIABLE int localId = global,Local.", simpleEngine.evaluate(
+				"localVARIABLE int localId = local,Local.", "local", "global", SimpleTemplateEngine.WHOLE_WORLD_SEARCH|SimpleTemplateEngine.CASE_SENSITIVE ));
+	}
+	
+	@Test
+	public void TestSimpleTemplateEngine18() {
+		assertEquals("defabcabc", simpleEngine.evaluate(
+				"defabc", "abc", "abcabc", SimpleTemplateEngine.DEFAULT_MATCH));
+	}
 }
