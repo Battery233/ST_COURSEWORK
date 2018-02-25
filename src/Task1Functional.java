@@ -309,5 +309,20 @@ public class Task1Functional {
 	// The engine processes one template at a time and attempts to match it against
 	// the keys of the EntryMap entries until there is a match or the entry list is
 	// exhausted
+	@Test
+	public void TestExhaustedResults() {
+		map.store("s", "S");
+		map.store("lm", "LM");
+		map.store("fgijkLMnopqr", "123");
+		assertEquals("abc}${de}123Suvw${xyz", engine.evaluate("abc}${de}${fgijk${lm}nopqr}${s}uvw${xyz", map, TemplateEngine.KEEP_UNMATCHED));
+	}
+	
+	@Test
+	public void TestExhaustedResults2() {
+		map.store("s", "S");
+		map.store("lm", "LM");
+		map.store("fgijkLMnopqr", "123");
+		assertEquals("abc}123Suvw${xyz", engine.evaluate("abc}${de}${fgijk${lm}nopqr}${s}uvw${xyz", map, TemplateEngine.DELETE_UNMATCHED));
+	}
 
 }
