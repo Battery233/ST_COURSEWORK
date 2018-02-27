@@ -365,8 +365,12 @@ public class Task1Coverage {
 		engine.evaluate("{$", map, TemplateEngine.DELETE_UNMATCHED);
 	}
 	
-
-
+	@Test
+	public void Test1() {
+		map.store("aba", "A");
+		map.store("SSS", "S");
+		engine.evaluate("${SSS}${aba}", map, TemplateEngine.DELETE_UNMATCHED);
+	}
 	// *
 	// *
 	// SimpleTemplateEngine Class Specification
