@@ -10,6 +10,10 @@ Source code of the implementation is under the src/ directory. Use this to achie
 
 src/Task1Functional.java is the functional testing part for the code.
 
+src/Task1Coverage.java is the branch coverage testing part for the code.
+
 code-coverage-1.JPG is the code coverage graph for functional testing.
 
 branch-coverage-1.JPG is the branch coverage graph for functional testing.
+
+branch-coverage-2.JPG is the branch coverage graph for coverage testing.
