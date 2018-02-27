@@ -355,6 +355,17 @@ public class Task1Coverage {
 		assertEquals("abc}123Suvw${xyz",
 				engine.evaluate("abc}${de}${fgijk${lm}nopqr}${s}uvw${xyz", map, TemplateEngine.DELETE_UNMATCHED));
 	}
+	
+	@Test
+	public void TestTemplateEngine1() {
+		map.store("s", "S");
+		map.store("lm", "LM");
+		map.store("fgijkLMnopqr", "123");
+		engine.evaluate("${}", map, TemplateEngine.DELETE_UNMATCHED);
+		engine.evaluate("{$", map, TemplateEngine.DELETE_UNMATCHED);
+	}
+	
+
 
 	// *
 	// *
