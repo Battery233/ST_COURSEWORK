@@ -1,4 +1,4 @@
-# # ST_COURSEWORK_1
+# ST_COURSEWORK_1
 
 This repository can be imported to Eclipse.
 
