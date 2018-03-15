@@ -546,9 +546,8 @@ public class Task1Coverage {
 	@Test
 	public void TestEntryMapEqual()  {
 		EntryMap a1 = new EntryMap();
-		EntryMap a2 = new EntryMap();
-		a2.store("lm", "LM");
-		assertEquals(a2.getEntries().get(0),a2.getEntries().get(0));
+		a1.store("lm", "LM");
+		assertEquals(a1.getEntries().get(0),a1.getEntries().get(0));
 	}
 	
 	@Test
