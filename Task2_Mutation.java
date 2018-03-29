@@ -31,10 +31,18 @@ public class Task2_Mutation {
     
     @Test
     public void Test2() {
+    	map.store("name", "Adam");
+    	map.delete("name");
+    	map.update("name", "bobhtgjhgt");
+
     }
     
     @Test
     public void Test3() {
+		map.store("name", "Adam");
+		Integer matchingMode = TemplateEngine.BLUR_SEARCH;
+		assertEquals("Adam", engine.evaluate("${name}", map, matchingMode));
+    	
     }
     
     @Test
@@ -65,6 +73,9 @@ public class Task2_Mutation {
     
     @Test
     public void Test6() {
+		map.store("a", "Adam");
+		Integer matchingMode = TemplateEngine.BLUR_SEARCH;
+		assertEquals("${}", engine.evaluate("${}", map, matchingMode));
     }
     
     @Test
@@ -84,6 +95,9 @@ public class Task2_Mutation {
     
     @Test
     public void Test9() {
+		map.store("name", "Adam     ");
+		Integer matchingMode = TemplateEngine.BLUR_SEARCH;
+		assertEquals("Adam     ", engine.evaluate("${name}", map, matchingMode));
     }
     
     @Test
