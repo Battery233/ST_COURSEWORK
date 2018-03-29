@@ -3,6 +3,7 @@ package st;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Stack;
+import java.util.Calendar;
 
 public class TemplateEngine {
 
@@ -17,7 +18,7 @@ public class TemplateEngine {
     private static final Character TEMPLATE_START_PREFIX = '$';
     private static final Character TEMPLATE_START = '{';
     private static final Character TEMPLATE_END = '}';
-
+    
     public TemplateEngine(){
 
     }
@@ -170,15 +171,95 @@ public class TemplateEngine {
         Boolean replaceHappened;
         Template currentTemplate;
         EntryMap.Entry currentEntry;
+        int baseYear = Calendar.getInstance().get(Calendar.YEAR);
         for (Integer i=0; i<sortedTemplates.size(); i++){
             currentTemplate = sortedTemplates.get(i);
             replaceHappened = Boolean.FALSE;
+               
+            for(Integer flag = 0; flag <sortedEntries.size(); flag++) {
+            	String pattern = sortedEntries.get(flag).getPattern();
+                if(!accurateSearch(matchingMode)) {
+                	pattern = pattern.replaceAll("\\s", "");
+                }
+            	if(caseInsensative(matchingMode)) {
+            		if(pattern.equalsIgnoreCase("base_year")){
+            			try {
+            				int a = Integer.parseInt(sortedEntries.get(flag).getValue());
+            				if(a>0) {
+            					baseYear = a;
+            				}
+            			}catch (Exception ignored) {
+            			}
+            		}
+            	}
+            	else
+            	{
+            		if(pattern.equals("base_year")){
+            			try {
+            				int a = Integer.parseInt(sortedEntries.get(flag).getValue());
+            				if(a>0) {
+            					baseYear = a;
+            				}
+            			}catch (Exception ignored) {
+            			}
+            		}
+            	}
+            		
+            }
+
             for(Integer j=0; j<sortedEntries.size(); j++){
+
                 currentEntry = sortedEntries.get(j);
+                boolean flag = false;
+                
                 if (isAMatch(currentTemplate, currentEntry, matchingMode)){
-                    instancedString = doReplace(instancedString, currentTemplate, i, currentEntry.getValue(), sortedTemplates);
-                    replaceHappened = Boolean.TRUE;
-                    break;
+                	if(currentTemplate.getContent().equals("year")) {
+                		if(currentEntry.getValue().equals("0")) {
+                			instancedString = doReplace(instancedString, currentTemplate, i, String.valueOf(baseYear), sortedTemplates);
+                            replaceHappened = Boolean.TRUE;
+                            break;
+                		}
+                		else{
+                			int diff = 0;
+                			String[] splited = currentEntry.getValue().split("\\s");
+                			if(splited.length == 3) {
+                				if(splited[1].equals("years")&&splited[2].equals("ago")) {
+                					try {
+                        				int a = Integer.parseInt(splited[0]);
+                        				if(a>0) {
+                        					diff = - a;
+                        					flag = true;
+                        				}
+                        			}catch (Exception ignored) {
+                        			}
+                				}
+                				else if(splited[0].equals("in")&&splited[2].equals("years")) {
+                					try {
+	                						int a = Integer.parseInt(splited[1]);
+	                        				if(a>0) {
+	                        					diff = a;
+	                        					flag = true;
+	                        				}
+                        			}catch (Exception ignored) {
+                        			}
+                				}
+                			}
+                			if(flag) {
+                				instancedString = doReplace(instancedString, currentTemplate, i, String.valueOf(baseYear + diff), sortedTemplates);
+    	                        replaceHappened = Boolean.TRUE;
+    	                        break;
+                			}
+                			else {
+                				instancedString = doReplace(instancedString, currentTemplate, i, currentEntry.getValue(), sortedTemplates);
+    	                        replaceHappened = Boolean.TRUE;
+    	                        break;
+                			}
+                		}
+                	}else {
+                		instancedString = doReplace(instancedString, currentTemplate, i, currentEntry.getValue(), sortedTemplates);
+                        replaceHappened = Boolean.TRUE;
+                        break;
+                	}
                 }
             }
             if(replaceHappened){

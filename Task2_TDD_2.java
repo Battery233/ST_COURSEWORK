@@ -6,7 +6,7 @@ import st.EntryMap;
 import st.TemplateEngine;
 import java.util.Calendar;
 
-public class Task2_TDD_1 {
+public class Task2_TDD_2 {
 
     private EntryMap map;
 
@@ -136,5 +136,46 @@ public class Task2_TDD_1 {
     	map.store("year", "5 years ago");
     	map.store("base_ year", "da");
     	assertEquals("Hello " + (year - 5), engine.evaluate("Hello ${year}", map, TemplateEngine.BLUR_SEARCH));
-    } 
+    }
+    
+    @Test
+    public void Test18() {
+    	map.store("a", "r");
+    	map.store("yeAr", "in 5 years");
+    	map.store("base_year", "2000");
+    	assertEquals("Hello " + (2000 + 5), engine.evaluate("Hello ${yea${a}}", map, TemplateEngine.DEFAULT));
+    }
+    
+    @Test
+    public void Test19() {
+    	map.store("year", "in 5 years");
+    	map.store("base_year", "2000");
+    	assertEquals("Hello ${yea${a}r}", engine.evaluate("Hello ${yea${a}r}", map, TemplateEngine.DEFAULT));
+    }
+    
+    @Test
+    public void Test20() {
+    	map.store("year", "in 5 years");
+    	map.store("base_year", "2000");
+    	assertEquals("Hello " + (2000 + 5), engine.evaluate("Hello ${yea${a}r}", map, TemplateEngine.DELETE_UNMATCHED));
+    }
+    
+    @Test
+    public void Test21() {
+    	map.store("a", "r");
+    	map.store("yeAr", "in years");
+    	map.store("base_year", "2000");
+    	assertEquals("Hello in years", engine.evaluate("Hello ${yea${a}}", map, TemplateEngine.DEFAULT));
+    }
+    
+    @Test
+    public void Test22() {
+    	map.store("a", "r");
+    	map.store("year", "in 5 years");
+    	map.store("year", "in 10 years");
+    	map.store("base_year", "2000");
+    	map.store("${yea${a}}", "0");
+    	assertEquals("Hello " + (2000 + 5), engine.evaluate("Hello ${yea${a}}", map, TemplateEngine.DEFAULT));
+    }
+    
 }
